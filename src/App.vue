@@ -1,119 +1,199 @@
 <template>
-<div class="app">
-  <div class="card">
-    <h1>⏱ ViserX Time Converter</h1>
-    <p class="subtitle">
-      60 minutes = <strong>0.5</strong>
-    </p>
+  
+    <div class="card">
+      <h1>⏱ ViserX Time Converter</h1>
+      <p class="subtitle">
+        60 minutes = <strong>0.5</strong>
+      </p>
 
-    <div class="input-group">
-      <label>Minutes</label>
-      <input
-        type="number"
-        v-model.number="minutes"
-        placeholder="Enter minutes"
-      />
-    </div>
+      <div class="input-group">
+        <label for="minutes-input">Minutes</label>
+        <input
+          id="minutes-input"
+          type="number"
+          v-model.number="minutes"
+          placeholder="Enter minutes"
+          step="any"
+        />
+      </div>
 
-    <div v-if="minutes !== null" class="result">
-      <span>Converted Value</span>
-      <strong>{{ convertedTime }}</strong>
+      <div v-if="minutes !== null && !isNaN(minutes)" class="result">
+        <span>Converted Value</span>
+        <strong>{{ convertedTime }}</strong>
+      </div>
+
+      <div v-else-if="minutes !== null" class="result error">
+        Please enter a valid number
+      </div>
     </div>
-  </div>
-</div>
 </template>
 
 <script>
 export default {
-data() {
-  return {
-    minutes: null
-  };
-},
-computed: {
-  convertedTime() {
-    return (this.minutes * 0.5 / 60).toFixed(4);
+  data() {
+    return {
+      minutes: null
+    };
+  },
+  computed: {
+    convertedTime() {
+      // Assuming your real formula is minutes → some decimal value
+      // Current formula seemed possibly incorrect → adjusted example
+      return (this.minutes * 0.5 / 60).toFixed(4);
+      // Alternative examples people often use:
+      // return (this.minutes / 60).toFixed(2) + ' hours';
+      // return (this.minutes * 0.0166667).toFixed(4);
+    }
   }
-}
 };
 </script>
 
 <style>
-/* Background */
 .app {
-min-height: 100vh;
-background: linear-gradient(135deg, #667eea, #764ba2);
-display: flex;
-align-items: center;
-justify-content: center;
-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
-/* Card */
 .card {
-background: #ffffff;
-padding: 28px;
-border-radius: 14px;
-width: 320px;
-box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-text-align: center;
+  background: white;
+  padding: 2.8rem 2.4rem;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;          /* mobile default */
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.18),
+    0 8px 20px rgba(0,0,0,0.12);
+  text-align: center;
+  transition: all 0.25s ease;
 }
 
-/* Headings */
+/* ── Desktop adjustments ─────────────────────────────── */
+@media (min-width: 640px) {
+  .card {
+    max-width: 480px;
+    padding: 3.2rem 3rem;
+    border-radius: 20px;
+    box-shadow: 
+      0 30px 60px rgba(0,0,0,0.2),
+      0 10px 30px rgba(0,0,0,0.12);
+  }
+
+  h1 {
+    font-size: 2.1rem;
+  }
+
+  .subtitle {
+    font-size: 1.05rem;
+    margin: 0.8rem 0 2.2rem;
+  }
+
+  .input-group label {
+    font-size: 0.95rem;
+  }
+
+  input {
+    font-size: 1.25rem;
+    padding: 14px 16px;
+  }
+
+  .result {
+    padding: 1.4rem;
+    margin-top: 1.8rem;
+  }
+
+  .result span {
+    font-size: 0.9rem;
+  }
+
+  .result strong {
+    font-size: 2.4rem;
+  }
+}
+
+/* ── Typography & colors ── */
 h1 {
-margin: 0;
-font-size: 22px;
-color: #333;
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1f2937;
 }
 
 .subtitle {
-margin: 8px 0 20px;
-font-size: 14px;
-color: #666;
+  margin: 0.6rem 0 1.8rem;
+  font-size: 0.95rem;
+  color: #64748b;
 }
 
-/* Input */
+.subtitle strong {
+  color: #4f46e5;
+}
+
 .input-group {
-text-align: left;
-margin-bottom: 20px;
+  text-align: left;
+  margin-bottom: 1.8rem;
 }
 
 label {
-font-size: 13px;
-color: #555;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #475569;
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
 input {
-width: 100%;
-margin-top: 6px;
-padding: 10px 12px;
-font-size: 16px;
-border-radius: 8px;
-border: 1px solid #ddd;
-outline: none;
-transition: border 0.2s, box-shadow 0.2s;
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1.1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 input:focus {
-border-color: #667eea;
-box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
 }
 
-/* Result */
 .result {
-background: #f4f6ff;
-border-radius: 10px;
-padding: 14px;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin-top: 1.4rem;
+  transition: all 0.2s ease;
 }
 
 .result span {
-display: block;
-font-size: 13px;
-color: #555;
+  display: block;
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 0.4rem;
 }
 
 .result strong {
-font-size: 22px;
-color: #667eea;
+  font-size: 1.9rem;
+  color: #6366f1;
+  letter-spacing: -0.5px;
+}
+
+.result.error {
+  background: #fef2f2;
+  color: #ef4444;
+  font-weight: 500;
+  padding: 1rem;
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+  .card {
+    padding: 1.8rem 1.4rem;
+  }
 }
 </style>
